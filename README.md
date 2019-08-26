@@ -1,4 +1,4 @@
-# fifl-example
+# fifl-carousel
 
 ## Project setup
 ```
