@@ -29,14 +29,24 @@ export default {
     ]
   },
   mutations: {
-    // addPhoto (state, data) {
-    //   state.photoList = data
-    // }
+    deletePhoto (state, data) {
+      state.photoList.splice(data, 1);
+    }
   },
   actions: {
-    // addPhoto ({ state, commit }, data) {
-    //   commit('addPhoto', data)
-    // }
+    deletePhoto ({ state, commit }, data) {
+      return new Promise((resolve, reject) => {
+        let findIndex = state.photoList.findIndex(i => i.id === data);
+        if (findIndex !== -1) {
+          // 삭제
+          commit('deletePhoto', findIndex);
+          resolve();
+        } else {
+          // 삭제 X
+          reject();
+        }
+      })
+    }
   },
   getters: {
     getPhotoList (state) {
