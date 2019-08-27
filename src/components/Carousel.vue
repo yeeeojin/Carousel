@@ -2,15 +2,11 @@
   <div>
     <h3>Carousel</h3>
     <div class="slide">
-      <ul class="list">
-        <transition-group name="list" tag="li">
-          <img v-for="photo in getPhotoList" :key="photo.id" class="list-item" :src="photo.imageUrl">
-        </transition-group>
-      </ul>
+      <img class="list-item" :src="getPhotoList[currentIdx].imageUrl">
     </div>
-      <button class="button-prev" @click="onPrev">{{ lt }}</button>
-        <span>사진 1</span>
-      <button class="button-next" @click="onNext">{{ rt }}</button>
+    <button class="button-prev" @click="onPrev">{{ lt }}</button>
+    <span>{{ getPhotoList[currentIdx].title }}</span>
+    <button class="button-next" @click="onNext">{{ rt }}</button>
     <h3>이미지 삭제</h3>
     <div>
       <label>
@@ -31,43 +27,53 @@ export default {
     return {
       lt: '<',
       rt: '>',
-      items: [1,2,3,4,5,6,7,8,9],
-      nextNum: 10,
+      slideTimer: 5000,
+      currentIdx: 0,
+      timer: null,
       deleteNum: null
-      // currentNumber: 0,
-      // timer: null
     }
   },
   computed: {
     ...mapGetters(['getPhotoList'])
   },
+  mounted () {
+    this.startRotation();
+  },
   methods: {
-    // startRotation: function() {
-    //   this.timer = setInterval(this.next, 3000);
-    // },
-    // stopRotation: function() {
-    //   clearTimeout(this.timer);
-    //   this.timer = null;
-    // },
+    startRotation () {
+      this.timer = setInterval(() => {
+        this.changeImage();
+      }, this.slideTimer);
+    },
+    stopRotation () {
+      clearTimeout(this.timer);
+      this.timer = null;
+    },
+    changeImage () {
+      this.currentIdx++;
+      if (this.currentIdx >= this.getPhotoList.length) {
+        this.currentIdx = 0;
+      }
+    },
     onPrev () {
-      console.log('클릭', this.getPhotoList);
+      this.stopRotation();
+      if (this.currentIdx === 0) {
+        // 첫번째
+        this.currentIdx = this.getPhotoList.length - 1;
+      } else {
+        this.currentIdx--;
+      }
+      this.startRotation();
     },
     onNext () {
-      console.log('클릭2');
-    },
-    add () {
-      if (this.deleteNum !== null) {
-        this.items.splice(Number(this.deleteNum), 0, this.nextNum++);
+      this.stopRotation();
+      if (this.currentIdx === this.getPhotoList.length - 1) {
+        // 마지막
+        this.currentIdx = 0;
       } else {
-        alert('삭제할 id를 입력하세요');
+        this.currentIdx++;
       }
-    },
-    remove () {
-      if (this.deleteNum !== null) {
-        this.items.splice(Number(this.deleteNum), 1);
-      } else {
-        alert('삭제할 id를 입력하세요2');
-      }
+      this.startRotation();
     }
   }
 }
