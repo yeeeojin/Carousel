@@ -1,9 +1,13 @@
 <template>
-  <div>
+  <div class="carousel">
     <h3>Carousel</h3>
-    <div class="slide">
-      <img class="list-item" :src="getPhotoList[currentIdx].imageUrl">
-    </div>
+    <!-- rt: 왼쪽으로 슬라이딩 / lt: 오른쪽으로 슬라이딩 -->
+    <transition-group tag="ul" :class="['img-slider', isRt ? 'rt' : 'lt']" name="slide">
+      <li v-for="number in [currentIdx]" :key="number">
+        <img :src="getPhotoList[Math.abs(currentIdx) % getPhotoList.length].imageUrl" />
+      </li>
+    </transition-group>
+
     <button class="button-prev" @click="onPrev">{{ lt }}</button>
     <span>{{ getPhotoList[currentIdx].title }}</span>
     <button class="button-next" @click="onNext">{{ rt }}</button>
@@ -27,6 +31,7 @@ export default {
     return {
       lt: '<',
       rt: '>',
+      isRt: true,
       slideTimer: 5000,
       currentIdx: 0,
       timer: null,
@@ -57,6 +62,7 @@ export default {
     },
     onPrev () {
       this.stopRotation();
+      this.isRt = false;
       if (this.currentIdx === 0) {
         // 첫번째
         this.currentIdx = this.getPhotoList.length - 1;
@@ -67,6 +73,7 @@ export default {
     },
     onNext () {
       this.stopRotation();
+      this.isRt = true;
       if (this.currentIdx === this.getPhotoList.length - 1) {
         // 마지막
         this.currentIdx = 0;

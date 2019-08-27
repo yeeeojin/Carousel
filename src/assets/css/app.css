@@ -6,20 +6,47 @@
   color: #2c3e50;
   margin-top: 60px;
 }
-.slide{
+.carousel{
   width: 400px;
-  height: 300px;
   overflow: hidden;
   position: relative;
   margin: 0 auto;
 }
-.slide ul{
-  width: 2000px;
-  position: absolute;
-  top:0;
-  left:0;
+.carousel ul{
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
   font-size: 0;
 }
-.slide ul li{
-  display: inline-block;
+
+.slide-leave-active, .slide-enter-active {
+  transition: 1s;
+}
+/* 왼쪽으로 슬라이딩 */
+.rt .slide-enter {
+  transform: translate(100%, 0);
+}
+.rt .slide-leave-to {
+  transform: translate(-100%, 0);
+}
+/* 오른쪽으로 슬라이딩 */
+.lt .slide-enter {
+  transform: translate(-100%, 0);
+}
+.lt .slide-leave-to {
+  transform: translate(100%, 0);
+}
+
+.img-slider{
+  overflow: hidden;
+  position: relative;
+  height: 300px;
+  width: 400px;
+}
+.img-slider img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right:0;
 }
