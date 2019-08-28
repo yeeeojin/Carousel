@@ -54,7 +54,7 @@ export default {
       }, this.slideTimer);
     },
     stopInterval () {
-      clearTimeout(this.timer);
+      clearInterval(this.timer);
       this.timer = null;
     },
     changeImage () {
