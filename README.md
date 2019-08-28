@@ -15,15 +15,7 @@ npm run serve
 npm run build
 ```
 
-### Run your tests
+### 로컬 실행하기
 ```
-npm run test
+http://localhost:8080/ url로 접속
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
