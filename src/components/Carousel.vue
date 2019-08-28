@@ -10,7 +10,7 @@
         </li>
       </transition-group>
       <button class="button-prev" @click="onPrev">{{ lt }}</button>
-      <span>{{ getPhotoList[currentIdx].title }}</span>
+      <span >{{ imgTitle }}</span>
       <button class="button-next" @click="onNext">{{ rt }}</button>
     </div>
     <h3>이미지 삭제</h3>
@@ -33,6 +33,7 @@ export default {
     return {
       lt: '<',
       rt: '>',
+      imgTitle: null,
       isRt: true,
       slideTimer: 5000,
       currentIdx: 0,
@@ -44,6 +45,7 @@ export default {
     ...mapGetters(['getPhotoList'])
   },
   mounted () {
+    this.imgTitle = this.getPhotoList[this.currentIdx].title;
     this.startInterval();
   },
   methods: {
@@ -78,6 +80,7 @@ export default {
       if (this.currentIdx >= this.getPhotoList.length) {
         this.currentIdx = 0;
       }
+      this.imgTitle = this.getPhotoList[this.currentIdx].title;
     },
     onPrev () {
       // <
@@ -89,6 +92,7 @@ export default {
       } else {
         this.currentIdx--;
       }
+      this.imgTitle = this.getPhotoList[this.currentIdx].title;
       this.startInterval();
     },
     onNext () {
@@ -101,6 +105,7 @@ export default {
       } else {
         this.currentIdx++;
       }
+      this.imgTitle = this.getPhotoList[this.currentIdx].title;
       this.startInterval();
     },
     onDelete () {
@@ -119,6 +124,25 @@ export default {
       .then(() => {
         // 이미지 삭제 성공
         alert('이미지를 삭제하였습니다.');
+        if (this.getPhotoList[this.currentIdx] === undefined) {
+          if (this.isRt) {
+            if (this.currentIdx === this.getPhotoList.length) {
+              // 마지막
+              this.currentIdx = 0;
+            } else {
+              this.currentIdx++;
+            }
+          } else {
+            if (this.currentIdx === 0) {
+              // 마지막
+              console.log(this.getPhotoList, this.getPhotoList.length);
+              this.currentIdx = this.getPhotoList.length;
+            } else {
+              this.currentIdx--;
+            }
+          }
+        }
+        this.imgTitle = this.getPhotoList[this.currentIdx].title;
       })
       .catch(() => {
         // 이미지 삭제 가능한 id 아님
